@@ -12,3 +12,5 @@
 > 1. 切换到dist发布版分支，挡下dist下来所有文件
 > 2. window下运行 startAgent.bat
 > 3. Linux下运行startAgent.sh
+
+这个项目不大，但是里面有许多优秀的设计思想，比如继承和多态，socket通信，jar包的运行设计，控制台应用程序设计思想等等。
