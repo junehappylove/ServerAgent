@@ -1,0 +1,46 @@
+返回数据格式：
+内存			swap		cpu			network disk
+----------------------------------------------------------------------------
+47.79939299012348	2.48305664E9	1.5055852355512385	0.0	0.0	
+47.82484390293672	2.483478528E9	3.2175925925925926	14790.0	0.0	
+47.84311922799645	2.484711424E9	11.723446893787576	5016.0	0.0	
+...
+...
+
+
+请求数据命令：注意格式，否则调用不成功
+
+metrics:memory:	swap:	cpu:	network i/o:	disks i/o:\n
+
+注意:
+1.命令的最后是由 \n的
+	且每个命令的样式由   命令字符串:Tab空格   
+2.这个serverAgent是存放在待要监控的服务器上
+	win系统启动startAgent.bat
+	linux系统启动startAgent.sh
+3.服务启动成功，提示如下信息：
+
+INFO    2016-09-06 15:20:47.030 [kg.apc.p] (): Binding UDP to 4444
+INFO    2016-09-06 15:20:48.044 [kg.apc.p] (): Binding TCP to 4444
+INFO    2016-09-06 15:20:48.044 [kg.apc.p] (): JP@GC Agent v2.2.0 started
+
+4.数据是 1s 钟取样一次数据
+
+5.serverAgent运行的服务器需要提前将4444端口在防火墙中设置为允许；
+Windows服务器下，在防火墙中添加tcp、udp协议的端口4444即可；
+
+==============================================================
+6.添加对tcp连接数支持，
+命令：metrics:tcp:\n
+7.添加对jmx监控支持：
+增加serverAgent对jmx的使用cpu占用率监控项；
+目前，serverAgent可以监控jmx的数据有：cpu使用率，内存使用量，垃圾回收时间，内存提交量，内存池使用量，内存池提交量，类总数，编译时间，这个8个监控项，
+使用命令如下：
+metrics:memory:\tswap:\tcpu:\tnetwork i/o:\tdisks i/o:\tmetrics:jmx:cpuused-\tjmx:memory-usage\tjmx:gc-time\tjmx:memory-committed\tjmx:memorypool-usage\tjmx:memorypool-committed\tjmx:class-count\tjmx:compile-time\n
+ 其中  \t表示tab键，\n回车
+
+
+
+
+
+
