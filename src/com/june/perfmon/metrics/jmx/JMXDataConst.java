@@ -18,5 +18,7 @@ public final class JMXDataConst {
 	public static final String JMX_OS = "java.lang:type=OperatingSystem";
 	public static final String JMX_MEMORY = "java.lang:type=Memory";
 	public static final String JMX_MEMORY_POOL = "java.lang:type=MemoryPool";
+	public static final String JMX_REQUEST_COUNT = "Catalina:type=GlobalRequestProcessor";
+	public static final String JMX_BYTE_SEND = "Catalina:type=GlobalRequestProcessor";
 
 }

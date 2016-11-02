@@ -40,6 +40,15 @@ public class JMXTest {
 			MBeanServerConnection mbsc = connector.getMBeanServerConnection();
 
 			// 端口最好是动态取得
+			ObjectName grpObjName = new ObjectName("Catalina:type=GlobalRequestProcessor,*");
+			Set<ObjectName> grps = mbsc.queryNames(grpObjName, null);
+			for (ObjectName obj : grps) {
+				System.out.println("名称:" + obj.getKeyProperty("name"));
+				ObjectName objname = new ObjectName(obj.getCanonicalName());
+				System.out.println("bytesReceived:" + mbsc.getAttribute(objname, "bytesReceived"));
+				System.out.println("bytesSent:" + mbsc.getAttribute(objname, "bytesSent"));
+				System.out.println("requestCount:" + mbsc.getAttribute(objname, "requestCount"));
+			}
 			
 			ObjectName threadObjName = new ObjectName("Catalina:type=ThreadPool,name=\"*http*\"");
 			Set<ObjectName> smbi = mbsc.queryNames(threadObjName, null);

@@ -56,20 +56,35 @@ public abstract class AbstractJMXDataProvider {
 		if(type.startsWith("cpuused-")){
 			return new CPUUsedDataProvider(mBeanServerConn, false);
 		}
+		if(type.startsWith("reqcount-")){
+			return new RequestCountDataProvider(mBeanServerConn, false);
+		}
+		if(type.startsWith("bytesent-")){
+			return new ByteSendDataProvider(mBeanServerConn, false);
+		}
 		throw new IllegalArgumentException("Can't define JMX type");
 	}
 
+	Set<ObjectName> getObjectNames(MBeanServerConnection mBeanServerConn) throws MalformedObjectNameException, IOException{
+		ObjectName gcAllObjectName = new ObjectName(getMXBeanType() + ",*");
+		Set<ObjectName> gcMXBeanObjectNames = mBeanServerConn.queryNames(gcAllObjectName, null);
+		return gcMXBeanObjectNames;
+	}
+	
 	private Set<Object> getMXBeans(MBeanServerConnection mBeanServerConn)
 			throws MalformedObjectNameException, NullPointerException,
 			IOException {
 		ObjectName gcAllObjectName = new ObjectName(getMXBeanType() + ",*");
-		Set<?> gcMXBeanObjectNames = mBeanServerConn.queryNames(gcAllObjectName, null);
-		Iterator<?> it = gcMXBeanObjectNames.iterator();
+		Set<ObjectName> gcMXBeanObjectNames = mBeanServerConn.queryNames(gcAllObjectName, null);
+		Iterator<ObjectName> it = gcMXBeanObjectNames.iterator();
 		Set<Object> res = new HashSet<Object>();
+		if(!(this.getMXBeanClass()==None.class)){
 		while (it.hasNext()) {
 			ObjectName on = (ObjectName) it.next();
-			Object mxBean = ManagementFactory.newPlatformMXBeanProxy(mBeanServerConn, on.getCanonicalName(), getMXBeanClass());
+			Object mxBean = ManagementFactory.newPlatformMXBeanProxy(mBeanServerConn, on.getCanonicalName(), this.getMXBeanClass());
 			res.add(mxBean);
+		}}else{
+			res.add("null");
 		}
 		return res;
 	}
@@ -105,7 +120,7 @@ public abstract class AbstractJMXDataProvider {
 			}
 		}
 		value /= divider;
-		System.out.println(value);
+		//System.out.println(value);
 		res.append(Long.toString(value));
 	}
 }
