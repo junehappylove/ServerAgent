@@ -55,7 +55,6 @@ public class PerfMonMetricGetter {
 	 */
 	private void processCommand(String command) throws IOException {
 		log.info("Got command line: " + command);
-		System.out.println("---->"+command);
 		String cmdType = command.trim();
 		String params = "";
 		if (command.indexOf(":") >= 0) {

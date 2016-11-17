@@ -23,9 +23,7 @@ public class TransportFactory {
 			}
 			return trans;
 		} catch (IOException e) {
-			log.info(
-					"Can't connect TCP transport for host: " + addr.toString(),
-					e);
+			log.info("Can't connect TCP transport for host: " + addr.toString(), e);
 			try {
 				log.debug("Connecting UDP");
 				trans = UDPInstance(addr);
@@ -34,9 +32,7 @@ public class TransportFactory {
 				}
 				return trans;
 			} catch (IOException ex) {
-				log.info(
-						"Can't connect UDP transport for host: "
-								+ addr.toString(), ex);
+				log.info("Can't connect UDP transport for host: " + addr.toString(), ex);
 				throw ex;
 			}
 		}

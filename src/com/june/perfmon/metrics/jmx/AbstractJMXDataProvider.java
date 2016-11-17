@@ -120,7 +120,6 @@ public abstract class AbstractJMXDataProvider {
 			}
 		}
 		value /= divider;
-		//System.out.println(value);
 		res.append(Long.toString(value));
 	}
 }
