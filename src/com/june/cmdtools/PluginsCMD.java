@@ -93,8 +93,7 @@ public class PluginsCMD extends AbstractCMDTool {
 			}
 		}
 		if (!AbstractCMDTool.class.isAssignableFrom(toolClass)) {
-			throw new IllegalArgumentException("Tool class " + arg
-					+ " not extends AbstractCMDTool");
+			throw new IllegalArgumentException("Tool class " + arg + " not extends AbstractCMDTool");
 		}
 		try {
 			return (AbstractCMDTool) toolClass.newInstance();

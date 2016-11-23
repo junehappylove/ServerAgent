@@ -35,8 +35,7 @@ public class AgentTool extends AbstractCMDTool {
 				LoggingManager.setPriority(loglevelStr);
 			} else if (nextArg.equalsIgnoreCase("--interval")) {
 				if (!args.hasNext()) {
-					throw new IllegalArgumentException(
-							"Missing interval specification");
+					throw new IllegalArgumentException("Missing interval specification");
 				}
 				worker.setInterval(Long.parseLong((String) args.next()));
 			} else if (nextArg.equalsIgnoreCase("--udp-port")) {

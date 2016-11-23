@@ -25,7 +25,7 @@ import org.hyperic.sigar.SigarProxyCache;
 import com.june.perfmon.metrics.SysInfoLogger;
 
 public class PerfMonWorker implements Runnable {
-	private static String version = "2.2.0";
+	private static String version = "1.2.0";
 	private static final Logger log = LoggingManager.getLoggerForClass();
 	private int tcpPort = 4444;
 	private int udpPort = 4444;
@@ -114,7 +114,8 @@ public class PerfMonWorker implements Runnable {
 			log.error("Can't accept TCP connections", ex);
 		}
 		if (started) {
-			log.info("JP@GC Agent v" + version + " started");
+			//log.info("JP@GC Agent v" + version + " started");
+			log.info("Server Agent v" + version + " started");
 		}
 	}
 

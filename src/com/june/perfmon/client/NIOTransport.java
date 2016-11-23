@@ -60,8 +60,3 @@ class NIOTransport extends AbstractTransport {
 		return "";
 	}
 }
-
-/*
- * Location: C:\Users\dell\Desktop\wjw\ServerAgent-2.2.1\ServerAgent.jar
- * Qualified Name: com.june.perfmon.client.NIOTransport JD-Core Version: 0.7.0.1
- */

@@ -44,9 +44,3 @@ class StreamTransport extends AbstractTransport {
 		this.os.write(line.concat("\n").getBytes());
 	}
 }
-
-/*
- * Location: C:\Users\dell\Desktop\wjw\ServerAgent-2.2.1\ServerAgent.jar
- * Qualified Name: com.june.perfmon.client.StreamTransport JD-Core Version:
- * 0.7.0.1
- */
