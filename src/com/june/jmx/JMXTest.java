@@ -9,8 +9,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import javax.management.MBeanAttributeInfo;
-import javax.management.MBeanInfo;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
@@ -20,6 +18,8 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
 public class JMXTest {
+
+	private static Formatter format = new Formatter();
 
 	/**
 	 * @param args
@@ -34,9 +34,10 @@ public class JMXTest {
 			Map<String, String[]> map = new HashMap<String, String[]>();
 			String[] credentials = new String[] { "monitorRole", "tomcat" };
 			map.put("jmx.remote.credentials", credentials);
-			//JMXConnector connector = JMXConnectorFactory.connect(serviceURL, map);
-			JMXConnector connector = JMXConnectorFactory.connect(serviceURL,null);
-			
+			// JMXConnector connector = JMXConnectorFactory.connect(serviceURL,
+			// map);
+			JMXConnector connector = JMXConnectorFactory.connect(serviceURL, null);
+
 			MBeanServerConnection mbsc = connector.getMBeanServerConnection();
 
 			// 端口最好是动态取得
@@ -49,7 +50,7 @@ public class JMXTest {
 				System.out.println("bytesSent:" + mbsc.getAttribute(objname, "bytesSent"));
 				System.out.println("requestCount:" + mbsc.getAttribute(objname, "requestCount"));
 			}
-			
+
 			ObjectName threadObjName = new ObjectName("Catalina:type=ThreadPool,name=\"*http*\"");
 			Set<ObjectName> smbi = mbsc.queryNames(threadObjName, null);
 			for (ObjectName obj : smbi) {
@@ -60,18 +61,20 @@ public class JMXTest {
 				System.out.println("繁忙线程数:" + mbsc.getAttribute(objname, "currentThreadsBusy"));
 			}
 
-//			ObjectName threadObjName1 = new ObjectName("Catalina:type=ThreadPool,name=\"http-apr-8080\"");
-//			MBeanInfo mbInfo = mbsc.getMBeanInfo(threadObjName1);
-//
-//			String attrName = "currentThreadCount";// tomcat的线程数对应的属性值
-//			MBeanAttributeInfo[] mbAttributes = mbInfo.getAttributes();
-//			System.out.println("currentThreadCount:" + mbsc.getAttribute(threadObjName1, attrName));
+			// ObjectName threadObjName1 = new
+			// ObjectName("Catalina:type=ThreadPool,name=\"http-apr-8080\"");
+			// MBeanInfo mbInfo = mbsc.getMBeanInfo(threadObjName1);
+			//
+			// String attrName = "currentThreadCount";// tomcat的线程数对应的属性值
+			// MBeanAttributeInfo[] mbAttributes = mbInfo.getAttributes();
+			// System.out.println("currentThreadCount:" +
+			// mbsc.getAttribute(threadObjName1, attrName));
 
 			// heap
 			for (int j = 0; j < mbsc.getDomains().length; j++) {
 				System.out.println("###########" + mbsc.getDomains()[j]);
 			}
-			
+
 			Set<?> MBeanset = mbsc.queryMBeans(null, null);
 			System.out.println("MBeanset.size() : " + MBeanset.size());
 			Iterator<?> MBeansetIterator = MBeanset.iterator();
@@ -86,6 +89,7 @@ public class JMXTest {
 					System.out.println("=========================================");
 					// getMBeansDetails(canonicalName);
 					String canonicalKeyPropList = objectName.getCanonicalKeyPropertyListString();
+					System.out.println(canonicalKeyPropList);
 				}
 			}
 			// ------------------------ system ----------------------
@@ -99,24 +103,27 @@ public class JMXTest {
 
 			Long timespan = (Long) mbsc.getAttribute(runtimeObjName, "Uptime");
 			System.out.println("连续工作时间:" + JMXTest.formatTimeSpan(timespan));
-			
+
 			// ----------------------- JVM -------------------------
 			// 堆使用率
 			ObjectName heapObjName = new ObjectName("java.lang:type=Memory");
-			MemoryUsage heapMemoryUsage = MemoryUsage.from((CompositeDataSupport) mbsc.getAttribute(heapObjName, "HeapMemoryUsage"));
+			MemoryUsage heapMemoryUsage = MemoryUsage
+					.from((CompositeDataSupport) mbsc.getAttribute(heapObjName, "HeapMemoryUsage"));
 			long maxMemory = heapMemoryUsage.getMax();// 堆最大
+			System.out.println("heap size:" + maxMemory);
 			long commitMemory = heapMemoryUsage.getCommitted();// 堆当前分配
 			long usedMemory = heapMemoryUsage.getUsed();
 			System.out.println("heap:" + (double) usedMemory * 100 / commitMemory + "%");// 堆使用率
 
-			MemoryUsage nonheapMemoryUsage = MemoryUsage.from((CompositeDataSupport) mbsc.getAttribute(heapObjName, "NonHeapMemoryUsage"));
+			MemoryUsage nonheapMemoryUsage = MemoryUsage
+					.from((CompositeDataSupport) mbsc.getAttribute(heapObjName, "NonHeapMemoryUsage"));
 			long noncommitMemory = nonheapMemoryUsage.getCommitted();
 			long nonusedMemory = heapMemoryUsage.getUsed();
 			System.out.println("nonheap:" + (double) nonusedMemory * 100 / noncommitMemory + "%");
 
 			ObjectName permObjName = new ObjectName("java.lang:type=MemoryPool,name=*Perm*Gen*");
 			Set<ObjectName> sperm = mbsc.queryNames(permObjName, null);
-			for(ObjectName obj:sperm){
+			for (ObjectName obj : sperm) {
 				ObjectName objname = new ObjectName(obj.getCanonicalName());
 				MemoryUsage permGenUsage = MemoryUsage.from((CompositeDataSupport) mbsc.getAttribute(objname, "Usage"));
 				long committed = permGenUsage.getCommitted();// 持久堆大小
@@ -165,6 +172,6 @@ public class JMXTest {
 
 		span = span / 24;
 		long days = span;
-		return (new Formatter()).format("%1$d天 %2$02d:%3$02d:%4$02d.%5$03d", days, hours, mins, seconds, minseconds).toString();
+		return format.format("%1$d天 %2$02d:%3$02d:%4$02d.%5$03d", days, hours, mins, seconds, minseconds).toString();
 	}
 }

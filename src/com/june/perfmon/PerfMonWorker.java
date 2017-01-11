@@ -37,7 +37,7 @@ public class PerfMonWorker implements Runnable {
 	private final Selector sendSelector;
 	private DatagramChannel udpServer;
 	private final LinkedList<SelectableChannel> tcpConnections = new LinkedList<SelectableChannel>();
-	private final Hashtable udpConnections = new Hashtable<SocketAddress, PerfMonMetricGetter>();
+	private final Hashtable<SocketAddress, Object> udpConnections = new Hashtable<SocketAddress, Object>();
 	private long interval = 1000L;
 	private final SigarProxy sigar;
 	private long numConnections = 0L;
@@ -329,6 +329,14 @@ public class PerfMonWorker implements Runnable {
 		}
 	}
 
+	/**
+	 * 将字节数据发往客户端
+	 * @param channel
+	 * @param buf
+	 * @throws IOException
+	 * @date 2017年1月11日 下午2:32:11
+	 * @writer junehappylove
+	 */
 	public void sendToClient(SelectableChannel channel, ByteBuffer buf)
 			throws IOException {
 		if ((channel instanceof DatagramChannel)) {
