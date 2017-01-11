@@ -13,8 +13,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
+/**
+ * 程序执行的主入口类: UniversalRunner <br>
+ * 
+ * @author 王俊伟 wjw.happy.love@163.com
+ * @blog https://www.github.com/junehappylove
+ * @date 2017年1月11日 下午2:39:48
+ * @version 1.0.0
+ */
 public final class UniversalRunner {
-	
+
 	private static final String CLASSPATH_SEPARATOR = System.getProperty("path.separator");
 	private static final String OS_NAME = System.getProperty("os.name");
 	private static final String OS_NAME_LC = OS_NAME.toLowerCase(Locale.ENGLISH);
@@ -35,8 +43,7 @@ public final class UniversalRunner {
 		String initial_classpath = System.getProperty(JAVA_CLASS_PATH);
 		String additional = System.getProperty(ADDITIONAL_CP);
 		if (additional != null) {
-			initial_classpath = initial_classpath + CLASSPATH_SEPARATOR
-					+ additional;
+			initial_classpath = initial_classpath + CLASSPATH_SEPARATOR + additional;
 			String[] parts = additional.split(CLASSPATH_SEPARATOR);
 			for (int n = 0; n < parts.length; n++) {
 				File[] f = { new File(parts[n]) };
@@ -60,10 +67,8 @@ public final class UniversalRunner {
 
 	private static String getJarDirectory(String initial_classpath) {
 		String tmpDir = null;
-		StringTokenizer tok = new StringTokenizer(initial_classpath,
-				File.pathSeparator);
-		if ((tok.countTokens() == 1)
-				|| ((tok.countTokens() == 2) && (OS_NAME_LC.startsWith("mac os x")))) {
+		StringTokenizer tok = new StringTokenizer(initial_classpath, File.pathSeparator);
+		if ((tok.countTokens() == 1) || ((tok.countTokens() == 2) && (OS_NAME_LC.startsWith("mac os x")))) {
 			File jar = new File(tok.nextToken());
 			try {
 				tmpDir = jar.getCanonicalFile().getParent();
@@ -92,8 +97,7 @@ public final class UniversalRunner {
 			File libDir = (File) it.next();
 			File[] libJars = libDir.listFiles(jarFilter);
 			if (libJars == null) {
-				new Throwable("Could not access " + libDir)
-						.printStackTrace(System.err);
+				new Throwable("Could not access " + libDir).printStackTrace(System.err);
 			} else {
 				addFiles(libJars, jars, classpath);
 			}
@@ -101,8 +105,7 @@ public final class UniversalRunner {
 		return classpath;
 	}
 
-	private static void addFiles(File[] libJars, List<URL> jars,
-			StringBuffer classpath) {
+	private static void addFiles(File[] libJars, List<URL> jars, StringBuffer classpath) {
 		boolean usesUNC = OS_NAME_LC.startsWith("windows");
 		for (int i = 0; i < libJars.length; i++) {
 			try {
@@ -129,8 +132,9 @@ public final class UniversalRunner {
 
 	public static void main(String[] args) throws Throwable {
 		try {
-			args = new String[]{"--tool","PerfMonAgent"};
-			Class<?> initialClass = Thread.currentThread().getContextClassLoader().loadClass("com.june.cmdtools.PluginsCMD");
+			args = new String[] { "--tool", "PerfMonAgent" };
+			Class<?> initialClass = Thread.currentThread().getContextClassLoader()
+					.loadClass("com.june.cmdtools.PluginsCMD");
 			Object instance = initialClass.newInstance();
 			Method startup = initialClass.getMethod("processParams", new Class[] { new String[0].getClass() });
 			Object res = startup.invoke(instance, new Object[] { args });
