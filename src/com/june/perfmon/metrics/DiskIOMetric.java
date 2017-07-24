@@ -27,9 +27,8 @@ class DiskIOMetric extends AbstractPerfMonMetric {
 	public static final byte TOTAL = 10;
 	public static final byte USE_PERCENT = 11;
 	public static final byte USED = 12;
-	public static final String[] types = { "available", "queue", "readbytes",
-			"reads", "service", "writebytes", "writes", "files", "free",
-			"freefiles", "total", "useperc", "used" };
+	public static final String[] types = { "available", "queue", "readbytes", "reads", "service", "writebytes",
+			"writes", "files", "free", "freefiles", "total", "useperc", "used" };
 	private int type = -1;
 	private final String[] filesystems;
 	private double prev = -1.0D;

@@ -6,7 +6,7 @@
 package com.june.perfmon.metrics.jmx;
 
 /**
- * TODO <br>
+ * JMX收集数据的常量定义 <br>
  * 
  * @author 王俊伟 wjw.happy.love@163.com
  * @date 2016年10月25日 下午4:50:56

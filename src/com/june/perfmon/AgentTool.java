@@ -11,8 +11,7 @@ import org.apache.log.Priority;
 public class AgentTool extends AbstractCMDTool {
 	private static final Logger log = LoggingManager.getLoggerForClass();
 
-	protected int processParams(ListIterator<?> args)
-			throws UnsupportedOperationException, IllegalArgumentException {
+	protected int processParams(ListIterator<?> args) throws UnsupportedOperationException, IllegalArgumentException {
 		LoggingManager.setPriority(Priority.INFO);
 		PerfMonWorker worker;
 		try {
@@ -24,32 +23,32 @@ public class AgentTool extends AbstractCMDTool {
 		while (args.hasNext()) {
 			String nextArg = (String) args.next();
 			log.debug("Arg: " + nextArg);
-			if (nextArg.equalsIgnoreCase("--tcp-port")) {
+			if (nextArg.equalsIgnoreCase(TCP_PORT)) {
 				if (!args.hasNext()) {
 					throw new IllegalArgumentException("Missing TCP Port no");
 				}
 				worker.setTCPPort(Integer.parseInt((String) args.next()));
-			} else if (nextArg.equals("--loglevel")) {
+			} else if (nextArg.equals(LOG_LEVEL)) {
 				args.remove();
 				String loglevelStr = (String) args.next();
 				LoggingManager.setPriority(loglevelStr);
-			} else if (nextArg.equalsIgnoreCase("--interval")) {
+			} else if (nextArg.equalsIgnoreCase(INTERVAL)) {
 				if (!args.hasNext()) {
 					throw new IllegalArgumentException("Missing interval specification");
 				}
 				worker.setInterval(Long.parseLong((String) args.next()));
-			} else if (nextArg.equalsIgnoreCase("--udp-port")) {
+			} else if (nextArg.equalsIgnoreCase(UDP_PORT)) {
 				if (!args.hasNext()) {
 					throw new IllegalArgumentException("Missing UDP Port no");
 				}
 				worker.setUDPPort(Integer.parseInt((String) args.next()));
-			} else if (nextArg.equals("--auto-shutdown")) {
+			} else if (nextArg.equals(AUTO_SHUTDOWN)) {
 				args.remove();
 				worker.setAutoShutdown();
-			} else if (nextArg.equals("--sysinfo")) {
+			} else if (nextArg.equals(SYS_INFO)) {
 				args.remove();
 				worker.logSysInfo();
-			} else if (nextArg.equals("--agent-version")) {
+			} else if (nextArg.equals(AGENT_VERSION)) {
 				args.remove();
 				worker.logVersion();
 			} else {
@@ -69,7 +68,13 @@ public class AgentTool extends AbstractCMDTool {
 	}
 
 	protected void showHelp(PrintStream os) {
-		os.println("Options for tool 'PerfMon': [ --tcp-port <port no> --udp-port <port no> --interval <seconds> --loglevel <debug|info|warn|error>--sysinfo --auto-shutdown]");
+		os.println("Options for tool 'PerfMon': [ " 
+				+ "--tcp-port <port no> " 
+				+ "--udp-port <port no> "
+				+ "--interval <seconds> " 
+				+ "--loglevel <debug|info|warn|error>" 
+				+ "--sysinfo " 
+				+ "--auto-shutdown]");
 	}
 
 	protected PerfMonWorker getWorker() throws IOException {

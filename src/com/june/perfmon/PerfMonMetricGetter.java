@@ -161,9 +161,9 @@ public class PerfMonMetricGetter {
 	public ByteBuffer getMetricsLine() throws IOException {
 		log.info("Building metrics");
 		StringBuffer res = new StringBuffer();
-		for(String ip:ips){//TODO 多网卡情况
-			res.append(name+TAB);
-			res.append(ip+TAB);
+		for(String ip : ips){//XXX 多网卡情况
+			res.append(name + TAB);
+			res.append(ip + TAB);
 			synchronized (this.channel) {
 				for (int n = 0; n < this.metrics.length; n++) {
 					try {
